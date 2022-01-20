@@ -10,7 +10,7 @@ description: >-
 
 Переходим на сайт [Unity](https://unity.com/ru) и нажимаем кнопку <mark style="color:green;">Начать</mark>
 
-![](<.gitbook/assets/image (33).png>)
+![](<.gitbook/assets/image (33) (1).png>)
 
 После перехода на выбор тарифа открываем вкладку <mark style="color:green;">Физическое Лицо</mark> и выбираем вариант <mark style="color:green;">Personal</mark>
 
