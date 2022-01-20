@@ -104,7 +104,7 @@ Unity Hub - лишь программа для установки редакто
 
 Если же у вас не устраивает светлая тема или наоборот хочется ее поставить :grimacing: то перейдите в верхнее меню <mark style="color:green;">Edit -> Preferences -> Editor Theme -> Light/Dark</mark>
 
-![](.gitbook/assets/image.png)
+![](<.gitbook/assets/image (1).png>)
 
 ### Связь Unity c Visual Studio
 
