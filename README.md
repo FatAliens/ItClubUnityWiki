@@ -18,7 +18,7 @@ description: >-
 
 Далее нам предложит скачать Unity Hub Beta, вместо это отправляемся чуть ниже и качаем стабильную версию для Windows
 
-![](<.gitbook/assets/image (27).png>)
+![](<.gitbook/assets/image (27) (1).png>)
 
 После этого устанавливаем и запускаем Unity Hub
 
