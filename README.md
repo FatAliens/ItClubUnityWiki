@@ -60,7 +60,7 @@ Unity Hub - лишь программа для установки редакто
 
 После этого жмем <mark style="color:green;">Install</mark> напротив нужной нам версии - <mark style="color:green;">2019 LTS</mark>
 
-![](<.gitbook/assets/image (7).png>)
+![](<.gitbook/assets/image (7) (1).png>)
 
 Выбираем поддержку разработки под <mark style="color:green;">Android</mark>, и не забудем установить <mark style="color:green;">Visual Studio</mark>, если все еще этого не сделали. После этого жмем привычное <mark style="color:green;">Continue</mark>, одновременно соглашаясь со всеми ~~<mark style="color:red;">кругами ада</mark>~~ юридическими нюансами :sunglasses:
 

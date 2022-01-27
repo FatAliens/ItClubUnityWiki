@@ -23,7 +23,7 @@ description: Создаем первую игру с простой физико
 По умолчанию у нас уже открыта сцена под названием <mark style="color:green;">SampleScene.</mark>\
 Все объекты на сцене в виде иерархии можно увидеть в окне Hierarhy в левой части экрана, там уже создано два объекта: <mark style="color:green;">Main Camera</mark> (_камера, из которой игрок видит локацию_) и <mark style="color:green;">Directional Light</mark> (_глобальное освещение которое симулирует солнце в игре_).
 
-![](<.gitbook/assets/image (23).png>)
+![](<.gitbook/assets/image (23) (1).png>)
 
 ### Стены
 
@@ -76,6 +76,11 @@ description: Создаем первую игру с простой физико
 {% hint style="info" %}
 Компонент - составная часть объекта, которая добавляет ему определенные возможность
 {% endhint %}
+
+Также в верхней части инспектора можно изменить и имя объекта, чтобы не путаться в большом количестве кубов\
+Изменим названия объектов на сцене следующим образом:
+
+![](<.gitbook/assets/image (12).png>)
 
 ### Сфера
 
@@ -343,5 +348,116 @@ float verticalInput = Input.GetAxis("Vertical");
 
 Таким образом мы сможем обрабатывать ввод не только с клавиатуры, но и с геймпада, т.к. оси ввода можно реализовать сразу для нескольких платформ
 
+Теперь будем двигать шар по двум осям
+
+```csharp
+transform.Translate(verticalInput, 0, horizontalInput);
+```
+
+Однако теперь он двигается слишком быстро (если у вас много кадров в секунду) или наоборот. То есть его скорость привязана к количеству кадров\
+Чтобы этого избежать умножим значения ввода на Time.deltaTime перед перемещением шара
+
+```csharp
+float fixedHorizontalInput = horizontalInput * Time.deltaTime;
+float fixedVerticalInput = verticalInput * Time.deltaTime;
+```
+
+Теперь шар двигается корректно, но слишком медленно. Добавим поле <mark style="color:green;">`Speed`</mark> в наш скрипт, которое можно будет менять напрямую из <mark style="color:green;">Инспектора</mark> и умножим значения осей на скорость&#x20;
+
+```csharp
+public float Speed;
+//...
+float finalHorizontalOffset = fixedHorizontalInput * Speed;
+float finalVerticalOffset = fixedVerticalInput * Speed;
+```
+
+В итоге скрипт выглядит следующим образом:
+
+```csharp
+public float Speed;
+private void Update()
+{
+    float horizontalInput = Input.GetAxis("Horizontal");
+    float verticalInput = Input.GetAxis("Vertical");
+    float fixedHorizontalInput = horizontalInput * Time.deltaTime;
+    float fixedVerticalInput = verticalInput * Time.deltaTime;
+    float finalHorizontalOffset = fixedHorizontalInput * Speed;
+    float finalVerticalOffset = fixedVerticalInput * Speed;
+    transform.Translate(finalHorizontalOffset, 0, finalVerticalOffset);
+}
+```
+
 ### Триггеры
 
+#### Создание триггера
+
+Теперь нам нужно реализовать механику подбора (_уничтожения_) предмета при нахождении шара в коллайдере этого объекта
+
+![](<.gitbook/assets/image (35).png>)
+
+Возможность проверять находится ли коллайдер одного в другом предоставляет нам триггер.\
+Для добавления триггера мы просто укажем галочку <mark style="color:green;">IsTrigger</mark> на компоненте <mark style="color:green;">Collider</mark> конкретного объекта
+
+![](<.gitbook/assets/image (7).png>)
+
+#### Функции взаимодействия с триггерами
+
+* <mark style="color:green;">`OnTriggerEnter`</mark> - вызывается при входе в триггер
+* <mark style="color:green;">`OnTriggerExit`</mark> - вызывается при выходе из триггера
+* <mark style="color:green;">`OnTriggerStay`</mark> - вызывается в каждый момент нахождения объекта в триггере
+
+Все эти функции принимают <mark style="color:green;">`Collider`</mark>, который и является триггером
+
+#### Подбор предметов с помощью триггера
+
+Теперь мы можем в скрипте шара проверить вошел ли его коллайдер в триггер.\
+Создадим новый скрипт <mark style="color:green;">TriggerDestroyer</mark> и добавим в него системную функцию <mark style="color:green;">`OnTriggerEnter`</mark>
+
+```csharp
+private void OnTriggerEnter(Collider other)
+{
+    //действие при входе в триггер
+}
+```
+
+Теперь нам нужно уничтожить объект, в триггер которого мы вошли. В Unity уже есть функция Destroy, которая принимает цель для уничтожения
+
+```csharp
+Destroy(other.gameObject);
+```
+
+В данном случае мы получаем игровой объект через компонент коллайдера
+
+#### Теги
+
+Но бывают ситуации когда нам нужно взаимодействовать не со всеми триггера, а только с конкретными. Для таких ситуаций существуют теги - специальные тестовые метки, которые может иметь любой объект.\
+Изменим тег на нужный, если такого нет, то добавим его с помощью кнопки <mark style="color:green;">AddTag</mark>
+
+![](<.gitbook/assets/image (23).png>)
+
+![](<.gitbook/assets/image (4).png>)
+
+Теперь добавим проверку на тег, вызвав у коллайдера функцию <mark style="color:green;">`CompareTag`</mark>, которая возвращает <mark style="color:green;">`true`</mark>, если на объекте он действительно есть
+
+```csharp
+if(other.CompareTag("Target"))
+{
+    //действие, если у объекта с триггером
+    //"Target" установлен в качестве тега
+}
+```
+
+Финальный код выглядит следующим образом:
+
+```csharp
+public class TriggerDestroyer : MonoBehaviour
+{
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Target"))
+        {
+            Destroy(other.gameObject);
+        }
+    }
+}
+```
