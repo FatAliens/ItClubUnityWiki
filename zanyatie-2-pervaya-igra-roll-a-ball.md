@@ -138,19 +138,19 @@ description: Создаем первую игру с простой физико
 
 ### Функции жизненного цикла MonoBehaviour
 
-Это функции, который вызывает сам <mark style="color:green;">Unity</mark> у всех классов, которые наследуются от <mark style="color:green;">MonoBehaviour</mark>
+Это функции, который вызывает сам <mark style="color:green;">Unity</mark> у всех классов, которые наследуются от <mark style="color:green;">`MonoBehaviour`</mark>
 
-#### Awake
+#### `Awake`
 
-Всегда вызывается перед функцией <mark style="color:green;">Start</mark>\
+Всегда вызывается перед функцией <mark style="color:green;">`Start`</mark>\
 Обычно используется для настройки основных зависимостей (_если текущий скрипт использует другие компоненты_)
 
-#### Start
+#### `Start`
 
 Вызывается после загрузки сцены перед первым кадром\
 Обычно используется для задания стартовых значений параметров либо же трансформации (_перемещение, вращение, масштаб_)
 
-#### Update
+#### `Update`
 
 Вызывается один раз за кадр до обновления кадра - **привязан к производительности игры**\
 Обычно используется для системы ввода и проверки значений в других скриптах благодаря чему минимизируются задержки в работе игры
@@ -159,24 +159,24 @@ description: Создаем первую игру с простой физико
 Не рекомендуется проводить дорогостоящие операции, такие как изменение физических параметров каждый кадр. Это оказывает значительное влияние на производительность
 {% endhint %}
 
-#### FixedUpdate
+#### `FixedUpdate`
 
 Вызывается каждый раз перед обновление физики - **почти не привязан к производительности** \
 Рекомендуется перемещение и изменение физических свойств объекта переносить именно сюда для более корректно просчета
 
 {% hint style="info" %}
-В <mark style="color:green;">FixedUpdate</mark> умножать скорость на <mark style="color:green;">Time.deltaTime</mark> не требуется, т.к. время между обновлением физики почти одинаково
+В <mark style="color:green;">`FixedUpdate`</mark> умножать скорость на <mark style="color:green;">`Time.deltaTime`</mark> не требуется, т.к. время между обновлением физики почти одинаково
 {% endhint %}
 
-#### LateUpdate
+#### `LateUpdate`
 
-Вызывается перед отрисовкой кадра, но после всех функций обновления (<mark style="color:green;">Update, FixedUpdate</mark>)
+Вызывается перед отрисовкой кадра, но после всех функций обновления (<mark style="color:green;">`Update`</mark><mark style="color:green;">,</mark> <mark style="color:green;"></mark><mark style="color:green;">`FixedUpdate`</mark>)
 
-#### OnEnable
+#### `OnEnable`
 
 Вызывается при включении текущего компонента и при старте игры, если компонент в этот момент включен.
 
-#### OnDisable
+#### `OnDisable`
 
 Вызывается при выключении текущего компонента, объекта, уничтожении объекта или удалении компонента с него.
 
@@ -190,15 +190,30 @@ description: Создаем первую игру с простой физико
 
 По умолчанию он выглядит следующим образом:
 
-![ConstantRotator.cs](<.gitbook/assets/image (34).png>)
+```csharp
+public class ConstantRotator : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
 
-Можно увидеть что был создал **C# класс**, который унаследован он <mark style="color:green;">MonoBehaviout</mark> - позволяет использовать методы жизненного цикла и добавлять скрипт на объект.&#x20;
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
+```
 
-По умолчанию уже определено два метода жизненного цикла, которые являются приватными (<mark style="color:green;">private</mark>).
+Можно увидеть что был создал **C# класс**, который унаследован он <mark style="color:green;">`MonoBehaviout`</mark> <mark style="color:green;"></mark><mark style="color:green;"></mark> - позволяет использовать методы жизненного цикла и добавлять скрипт на объект.&#x20;
+
+По умолчанию уже определено два метода жизненного цикла, которые являются приватными (`private`).
 
 Теперь нужно реализовать постоянное вращение - бесконечно поворачивать объект на определенный угол.\
-Во вращение и перемещении нам помогает свойство <mark style="color:green;">transform</mark>, которое если у любого <mark style="color:green;">MonoBehaviout</mark>, которое позволяет получить доступ к компоненту <mark style="color:green;">Tranform</mark>.\
-Для вращения объекта используется метод <mark style="color:green;">Rotate</mark>, который принимает поворот в трех координатах - <mark style="color:green;">X, Y, Z</mark>. Просто добавим его в функцию <mark style="color:green;">Update</mark> и получим постоянное вращение.
+Во вращение и перемещении нам помогает свойство <mark style="color:green;">`transform`</mark>, которое если у любого <mark style="color:green;">`MonoBehaviout`</mark>, которое позволяет получить доступ к компоненту <mark style="color:green;">`Tranform`</mark>.\
+Для вращения объекта используется метод <mark style="color:green;">`Rotate`</mark>, который принимает поворот в трех координатах - <mark style="color:green;">X, Y, Z</mark>. Просто добавим его в функцию <mark style="color:green;">`Update`</mark> и получим постоянное вращение.
 
 ```csharp
 void Update()
@@ -222,54 +237,111 @@ public Vector3 RotationSpeed;
 
 ![](<.gitbook/assets/image (27).png>)
 
-Тип <mark style="color:green;">Vector3</mark> используется для задания значения по трем осям, каждое из которых представляет значение типа <mark style="color:green;">float</mark>.
+Тип <mark style="color:green;">`Vector3`</mark> используется для задания значения по трем осям, каждое из которых представляет значение типа <mark style="color:green;">`float`</mark>.
 
-Изменим код вращения, использовав поле <mark style="color:green;">RotationSpeed</mark>
+Изменим код вращения, использовав поле <mark style="color:green;">`RotationSpeed`</mark>
 
 ```csharp
 void Update()
-    {
-        transform.Rotate(RotationSpeed);
-    }
+{
+    transform.Rotate(RotationSpeed);
+}
 ```
 
-Теперь у каждого объекта со скриптом <mark style="color:green;">ConstantRotator</mark> можно будет указать свою _уникальную_ скорость вращения.
+Теперь у каждого объекта со скриптом <mark style="color:green;">`ConstantRotator`</mark> можно будет указать свою _уникальную_ скорость вращения.
 
 ### Трансформация объекта независимо от производительность
 
-При постоянном изменении позиции или вращения объекта очень важно чтобы это происходило с одинаковой частотой, к примеру тут метод <mark style="color:green;">Update</mark> вызывается каждый кадр, из-за чего скорость вращения фактически привязана к производительности компьютера (_количеству кадров в секунду_) - чем больше кадров, тем быстрее вращается объект (_привет бегу в Fallout 76 или консольным играм заточенным под 30 FPS_).
+При постоянном изменении позиции или вращения объекта очень важно чтобы это происходило с одинаковой частотой, к примеру тут метод <mark style="color:green;">`Update`</mark> вызывается каждый кадр, из-за чего скорость вращения фактически привязана к производительности компьютера (_количеству кадров в секунду_) - чем больше кадров, тем быстрее вращается объект (_привет бегу в Fallout 76 или консольным играм заточенным под 30 FPS_).
 
 Чтобы абстрагировать вращении или перемещение объекта от частоты кадров в секунду применяется несколько уловок:
 
-#### Time.deltaTime
+#### `Time.deltaTime`
 
 Изменять значения с той же частотой, но не на одинаковое значение, а привязать его в частоте кадров: при 60 вращать на 2.5 градуса, а при 30 на 5\
 Чтобы это реализовать нужно умножать скорость на время, прошедшее с предыдущего кадра (фактически время между кадрами, которое напрямую зависит от частоты их обновления).\
-<mark style="color:green;">Time.deltaTime</mark> - время, прошедшее с предыдущего вызова функции <mark style="color:green;">Update</mark>
+<mark style="color:green;">`Time.deltaTime`</mark> - время, прошедшее с предыдущего вызова функции <mark style="color:green;">`Update`</mark>
 
 ```csharp
 void Update()
-    {
-        Vector3 fixedRotationSpeed = RotationSpeed * Time.deltaTime;
-        transform.Rotate(fixedRotationSpeed);
-    }
+{
+    Vector3 fixedRotationSpeed = RotationSpeed * Time.deltaTime;
+    transform.Rotate(fixedRotationSpeed);
+}
 ```
 
-#### FixedUpdate
+#### `FixedUpdate`
 
-Изменять значение с постоянной, фиксированной частотой - с помощью функции [FixedUpdate](zanyatie-2-pervaya-igra-roll-a-ball.md#fixedupdate).
+Изменять значение с постоянной, фиксированной частотой - с помощью функции <mark style="color:green;">`FixedUpdate`</mark>.
 
 ```csharp
 void FixedUpdate()
-    {
-        transform.Rotate(RotationSpeed);
-    }
+{
+    transform.Rotate(RotationSpeed);
+}
 ```
 
 ### Управление мячом
 
-Создадим новый скрипт BallController, который будет отвечать за управление перемещением шара\
-Чтобы проверить нажата ли определенная кнопка используется
+Создадим новый скрипт <mark style="color:green;">BallController</mark>, который будет отвечать за управление перемещением шара\
+Чтобы проверить нажата ли определенная кнопка используется функция <mark style="color:green;">`Input.GetKey(KeyCode)`</mark> которая принимает код элемента и возвращает <mark style="color:green;">`true`</mark>, если она прямо сейчас нажата
+
+```csharp
+private void Update()
+    {
+        if (Input.GetKey(KeyCode.UpArrow)) 
+        {
+            //действие, если стрелка вверх нажата
+        }
+    }
+```
+
+Проверку пользовательского ввода мы вставили в функцию <mark style="color:green;">`Update`</mark>, т.к. хотим добиться максимальной отзывчивости
+
+Теперь нам нужно реализовать перемещение шара вперед при нажатии стрелки вверх\
+Для передвижения объекта используется метод <mark style="color:green;">`Translate`</mark> у объекта <mark style="color:green;">`tranform`</mark>, который принимает движение по трем координатам
+
+```csharp
+if (Input.GetKey(KeyCode.UpArrow))
+{
+    transform.Translate(0.1f, 0, 0);
+}
+```
+
+Движение по вертикали будет изменять позицию по оси X, а по горизонтали - Z\
+Скопируем код для остальных элементов управления
+
+```csharp
+float speed = 0.1f;
+if (Input.GetKey(KeyCode.UpArrow))
+{
+ transform.Translate(speed, 0, 0);
+}
+if (Input.GetKey(KeyCode.DownArrow))
+{
+ transform.Translate(-speed, 0, 0);
+}
+if (Input.GetKey(KeyCode.LeftArrow))
+{
+ transform.Translate(0, 0, speed);
+}
+if (Input.GetKey(KeyCode.RightArrow))
+{
+ transform.Translate(0, 0, -speed);
+}
+```
+
+Получилось очень много операторов `if`, а если учитывать что вызывать мы будем это каждый кадр могут образоваться еще и проверки с производительностью
+
+Хорошо что в Unity уже есть инструмент для работы с осями ввода - <mark style="color:green;">`Input.GetAxis(axisName)`</mark>. Эта функция принимает название оси и возвращает дробное число от <mark style="color:green;">-1 до 1</mark>\
+В качестве названия оси мы используем настроенные по умолчанию <mark style="color:green;">Horizontal</mark> и <mark style="color:green;">Vertical</mark> (<mark style="color:green;">ввод по вертикали и горизонтали соответственно</mark>)
+
+```csharp
+float horizontalInput = Input.GetAxis("Horizontal");
+float verticalInput = Input.GetAxis("Vertical");
+```
+
+Таким образом мы сможем обрабатывать ввод не только с клавиатуры, но и с геймпада, т.к. оси ввода можно реализовать сразу для нескольких платформ
 
 ### Триггеры
 
